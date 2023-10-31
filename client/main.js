@@ -108,3 +108,25 @@ form.addEventListener('keyup', function(e) {
     handleSubmit(e)
   }
 })
+
+function openModal() {
+  document.getElementById("myModal").style.display = "block";
+  console.log("Called")
+}
+
+function closeModal() {
+  document.getElementById("myModal").style.display = "none";
+  console.log("Called")
+}
+
+// Close the modal when the background is clicked
+window.onclick = function(event) {
+  var modal = document.getElementById("myModal");
+  if (event.target == modal) {
+      modal.style.display = "none";
+  }
+}
+
+window.onload = function(event) {
+  openModal()
+}

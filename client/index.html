@@ -5,18 +5,54 @@
     <link rel="icon" type="image/svg+xml" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Codex - Your coding AI</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div id="app">
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="close-button" onclick="closeModal()">&times;</span>
+          <h2>Hello!</h2>
+          <p>This project was made back when the OpenAI API was available for free. I'm looking for a way to get access to the API and until then this app won't work as intended.</p>
+          <p>You can click this <a href="https://github.com/arkul07/openai_codex">link</a> to view the code.</p>
+          <button onclick="closeModal()">Close</button>
+        </div>
+      </div>
       <div id="chat_container"></div>
 
-
       <form>
-        <textarea name="prompt" rows="1" cols="1" placeholder="Ask Codex...."></textarea>
-        <button type="submit"><img src="./assets/send.svg"></button>
+        <textarea
+          name="prompt"
+          rows="1"
+          cols="1"
+          placeholder="Ask Codex...."
+        ></textarea>
+        <button type="submit"><img src="./assets/send.svg" /></button>
       </form>
     </div>
     <script type="module" src="/main.js"></script>
   </body>
+  <script>
+    function openModal() {
+      document.getElementById("myModal").style.display = "block";
+      console.log("Called");
+    }
+
+    function closeModal() {
+      document.getElementById("myModal").style.display = "none";
+      console.log("Called");
+    }
+
+    // Close the modal when the background is clicked
+    window.onclick = function (event) {
+      var modal = document.getElementById("myModal");
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    window.onload = function (event) {
+      openModal();
+    };
+  </script>
 </html>
