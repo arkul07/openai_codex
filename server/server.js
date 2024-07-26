@@ -7,9 +7,8 @@ import { appendFile } from 'fs'
 dotenv.config()
 
 const configuration = new Configuration({
-    apiKey: process.env.OPEN_AI_API_KEY
+  apiKey: process.env.OPEN_AI_API_KEY
 })
-
 
 const openai = new OpenAIApi(configuration)
 
@@ -18,34 +17,37 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.get('/', async(req,res) => {
-    res.status(200).send({
-        message:"Hello from Codex"
+app.get('/', async (req, res) => {
+  res.status(200).send({
+    message: 'Hello from Codex'
+  })
+})
+
+app.post('/', async (req, res) => {
+  try {
+    const prompt = req.body.prompt
+
+    const response = await openai.createChatCompletion({
+      model: 'gpt-4-turbo', // or "gpt-4-turbo-16k" for a version with more context length
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant.' },
+        { role: 'user', content: prompt }
+      ],
+      max_tokens: 2000, // Adjust the number of tokens as needed
+      temperature: 0.7 // Adjust the temperature for more or less randomness
     })
+
+    // Extract the response content
+    const completion = response.data.choices[0].message.content
+    console.log(completion)
+
+    res.status(200).send({
+      bot: response.data.choices[0].message.content
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ error })
+  }
 })
 
-app.post('/', async(req,res) => {
-    try {
-        const prompt = req.body.prompt
-
-        const response = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: `${prompt}`,
-            temperature: 0,
-            max_tokens: 3000,
-            top_p: 1,
-            frequency_penalty: 0.5,
-            presence_penalty: 0,
-        })
-
-        res.status(200).send({
-            bot: response.data.choices[0].text
-        })
-    } catch (error) {
-        console.log(error)
-        res.status(500).send({error})
-    }
-})
-
-
-app.listen(4000, () => console.log("Server Started"))
+app.listen(4000, () => console.log('Server Started'))
